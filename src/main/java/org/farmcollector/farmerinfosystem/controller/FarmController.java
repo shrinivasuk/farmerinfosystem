@@ -21,6 +21,11 @@ public class FarmController {
     @Autowired
     private FarmService farmService;
 
+    /**
+     * To add farms data
+     * @param farm
+     * @return
+     */
     @PostMapping("/farms")
     public ResponseEntity<String> addFarm(@RequestBody Farm farm) {
         if(farm.getName().isBlank()){
@@ -30,6 +35,11 @@ public class FarmController {
         return ResponseEntity.ok("Farm added successfully");
     }
 
+    /**
+     * planted data to be added
+     * @param planting
+     * @return
+     */
     @PostMapping("/planted")
     public ResponseEntity<String> addPlanting(@RequestBody Planting planting) {
         if(planting.getPlantingArea() <=0){
@@ -39,6 +49,11 @@ public class FarmController {
         return ResponseEntity.ok("Planting record added successfully");
     }
 
+    /**
+     * Post api to add data
+     * @param harvesting
+     * @return
+     */
     @PostMapping("/harvested")
     public ResponseEntity<String> addHarvesting(@RequestBody Harvesting harvesting) {
         if(harvesting.getAmtOfActualProduct() <=0){
@@ -48,12 +63,24 @@ public class FarmController {
         return ResponseEntity.ok("Harvesting record added successfully");
     }
 
+    /**
+     * To fetch farm report
+     * @param farmId
+     * @param season
+     * @return
+     */
     @GetMapping("/reports/farm")
     public ResponseEntity<List<Map<String, Object>>> getReportByFarm(@RequestParam Long farmId, @RequestParam String season) {
         List<Map<String, Object>> report = farmService.getReportByFarm(farmId, season);
         return ResponseEntity.ok(report);
     }
 
+    /**
+     * To fetch the crop report
+     * @param cropType
+     * @param season
+     * @return
+     */
     @GetMapping("/reports/crop")
     public ResponseEntity<List<Map<String, Object>>> getReportByCrop(@RequestParam String cropType, @RequestParam String season) {
         List<Map<String, Object>> report = farmService.getReportByCrop(cropType, season);

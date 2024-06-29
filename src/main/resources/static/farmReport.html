@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Farm Report</title>
+    <script>
+        async function fetchFarmReport() {
+            const farmId = document.getElementById('farmId').value;
+            const season = document.getElementById('season').value;
+            const response = await fetch(`/api/reports/farm?farmId=${farmId}&season=${season}`);
+            const report = await response.json();
+            displayReport(report);
+        }
+
+        function displayReport(report) {
+            const reportContainer = document.getElementById('reportContainer');
+            reportContainer.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Field ID</th>
+                            <th>Crop Type</th>
+                            <th>Expected Product</th>
+                            <th>Actual Product</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${report.map(record => `
+                            <tr>
+                                <td>${record.fieldId}</td>
+                                <td>${record.cropType}</td>
+                                <td>${record.expectedProduct}</td>
+                                <td>${record.actualProduct}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+    </script>
+</head>
+<body>
+<h1>Farm Report</h1>
+<form onsubmit="event.preventDefault(); fetchFarmReport();">
+    <label for="farmId">Farm ID:</label>
+    <input type="text" id="farmId" name="farmId" required>
+    <label for="season">Season:</label>
+    <input type="text" id="season" name="season" required>
+    <button type="submit">Get Report</button>
+</form>
+<div id="reportContainer"></div>
+</body>
+</html>

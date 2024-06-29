@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crop Report</title>
+    <script>
+        async function fetchCropReport() {
+            const cropType = document.getElementById('cropType').value;
+            const season = document.getElementById('season').value;
+            const response = await fetch(`/api/reports/crop?cropType=${cropType}&season=${season}`);
+            const report = await response.json();
+            displayReport(report);
+        }
+
+        function displayReport(report) {
+            const reportContainer = document.getElementById('reportContainer');
+            reportContainer.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Farm ID</th>
+                            <th>Expected Product</th>
+                            <th>Actual Product</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${report.map(record => `
+                            <tr>
+                                <td>${record.farmId}</td>
+                                <td>${record.expectedProduct}</td>
+                                <td>${record.actualProduct}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+    </script>
+</head>
+<body>
+    <h1>Crop Report</h1>
+    <form onsubmit="event.preventDefault(); fetchCropReport();">
+        <label for="cropType">Crop Type:</label>
+        <input type="text" id="cropType" name="cropType" required>
+        <label for="season">Season:</label>
+        <input type="text" id="season" name="season" required>
+        <button type="submit">Get Report</button>
+    </form>
+    <div id="reportContainer"></div>
+</body>
+</html>
