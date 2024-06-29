@@ -13,8 +13,9 @@ public class Planting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "farm_name")
-    private String farmName;
+    @ManyToOne
+    @JoinColumn(name = "farm_id", nullable = false)
+    private Farm farm;
 
     @Column(name = "season")
     private String season;
